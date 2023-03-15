@@ -1,0 +1,34 @@
+Function check_adaptor_name()
+
+Dim i As Integer
+Dim name As Variant
+
+'150 kafali üretilirken buraya ilk 3 harfin proje kodu mu diye bakilmali
+
+For i = 1 To total_rows
+
+    If Len(adaptor_name(i)) = 18 Then
+            
+         name = str_to_array(adaptor_name(i))
+         
+         If Left(adaptor_name(i), 12) = "HRN_TST_ADP_" And WorksheetFunction.Find("/", adaptor_name(i), 12) = 16 Then
+            'no problem
+         Else
+         
+        Worksheets("Error Log").Cells(error_row, error_log_row_column).Value = "C: " & 2 & " R: " & i + 2
+         Worksheets("Error Log").Cells(error_row, error_log_error_column).Value = "Adaptor name standarta uymuyor. (HRN_TST_ADP_XXX/01)"
+         Worksheets("Error Log").Cells(error_row, error_log_type_column).Value = "Critic Error"
+         error_row = error_row + 1
+         
+         End If
+    
+    Else
+    
+         Worksheets("Error Log").Cells(error_row, error_log_row_column).Value = "C: " & 2 & " R: " & i + 2
+         Worksheets("Error Log").Cells(error_row, error_log_error_column).Value = "Adaptor name standarta uymuyor. (HRN_TST_ADP_XXX/01)"
+         Worksheets("Error Log").Cells(error_row, error_log_type_column).Value = "Critic Error"
+         error_row = error_row + 1
+
+    End If
+
+Next i
